@@ -69,4 +69,12 @@ private:
     void LoadAssets();
     void PopulateCommandList();
     void WaitForPreviousFrame();
+
+    //imgui
+protected:
+    ComPtr<ID3D12DescriptorHeap> m_SrvHeap;
+    void InitImgui();
+    void DrawImgui();
+    void DestroyImgui();
+    float TestFLoat;
 };

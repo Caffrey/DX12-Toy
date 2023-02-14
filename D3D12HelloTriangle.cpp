@@ -12,6 +12,10 @@
 #include "stdafx.h"
 #include "D3D12HelloTriangle.h"
 
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx12.h"
+
 D3D12HelloTriangle::D3D12HelloTriangle(UINT width, UINT height, std::wstring name) :
     DXSample(width, height, name),
     m_frameIndex(0),
@@ -24,7 +28,61 @@ D3D12HelloTriangle::D3D12HelloTriangle(UINT width, UINT height, std::wstring nam
 void D3D12HelloTriangle::OnInit()
 {
     LoadPipeline();
+    InitImgui();
     LoadAssets();
+}
+
+void D3D12HelloTriangle::InitImgui()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplWin32_Init(Win32Application::GetHwnd());
+
+    D3D12_DESCRIPTOR_HEAP_DESC SrvHeapDesc;
+    SrvHeapDesc.NumDescriptors = 1;
+    SrvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    SrvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    SrvHeapDesc.NodeMask = 0;
+	ThrowIfFailed(m_device->CreateDescriptorHeap(&SrvHeapDesc, IID_PPV_ARGS(m_SrvHeap.GetAddressOf())));
+
+
+    ImGui_ImplDX12_Init(m_device.Get(),FrameCount,
+        DXGI_FORMAT_R8G8B8A8_UNORM, 
+        m_SrvHeap.Get(),
+        m_SrvHeap->GetCPUDescriptorHandleForHeapStart(),
+        m_SrvHeap->GetGPUDescriptorHandleForHeapStart()
+    );
+}
+
+void D3D12HelloTriangle::DestroyImgui()
+{
+    ImGui_ImplDX12_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    
+} 
+
+void D3D12HelloTriangle::DrawImgui()
+{
+    ImGui_ImplDX12_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    bool Yes = true;
+    ImGui::ShowDemoWindow(&Yes);
+
+    ImGui::Begin("Hello Fuck");
+	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+	ImGui::SliderFloat("float", &TestFLoat, 0.1f, 1.0f);
+
+	ImGui::SameLine();
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::End();
+	ImGui::Render();
+	m_commandList->SetDescriptorHeaps(1, m_SrvHeap.GetAddressOf());
+    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_commandList.Get());
+    //ThrowIfFailed(m_commandList->Close());
 }
 
 // Load the rendering pipeline dependencies.
@@ -261,11 +319,13 @@ void D3D12HelloTriangle::OnRender()
 {
     // Record all the commands we need to render the scene into the command list.
     PopulateCommandList();
+	DrawImgui();
+	ThrowIfFailed(m_commandList->Close());
 
     // Execute the command list.
     ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
     m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-
+    
     // Present the frame.
     ThrowIfFailed(m_swapChain->Present(1, 0));
 
@@ -276,9 +336,13 @@ void D3D12HelloTriangle::OnDestroy()
 {
     // Ensure that the GPU is no longer referencing resources that are about to be
     // cleaned up by the destructor.
+    
+    DestroyImgui();
     WaitForPreviousFrame();
 
     CloseHandle(m_fenceEvent);
+
+
 }
 
 void D3D12HelloTriangle::PopulateCommandList()
@@ -314,7 +378,6 @@ void D3D12HelloTriangle::PopulateCommandList()
     // Indicate that the back buffer will now be used to present.
     m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
-    ThrowIfFailed(m_commandList->Close());
 }
 
 void D3D12HelloTriangle::WaitForPreviousFrame()
