@@ -19,15 +19,36 @@
     <Filter Include="3rdparty\imgui">
       <UniqueIdentifier>{56948478-cb1a-472f-84e8-727860a107ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Core">
+      <UniqueIdentifier>{b9ada663-dd29-4377-a8b0-8bac2289605c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Core">
+      <UniqueIdentifier>{05c9f864-f1ed-40a9-a91b-422c41e8e229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\RenderPass">
+      <UniqueIdentifier>{e59f4960-96f2-484b-b506-1412e59efefe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\RenderPass">
+      <UniqueIdentifier>{0ff6f0ef-02df-4a72-b0ab-e4a9793a746e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\RHI">
+      <UniqueIdentifier>{649d0125-34c4-4112-b881-0e1d763c7052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\RHI">
+      <UniqueIdentifier>{af5b6d6d-faf8-4781-90ca-fc5d48682f69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Renderer">
+      <UniqueIdentifier>{1bb3ed23-7dbf-4298-8b0d-bf93f9b2548d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Renderer">
+      <UniqueIdentifier>{0792d412-fea6-4d7f-8bd1-db78666a7284}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3D12HelloTriangle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DXSample.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -56,6 +77,57 @@
     </ClCompile>
     <ClCompile Include="3rdparty\imgui\imgui_widgets.cpp">
       <Filter>3rdparty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D12HelloTrianglePartices.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>源文件\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderPass.cpp">
+      <Filter>源文件\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>源文件\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>源文件\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>源文件\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="GemoteryPass.cpp">
+      <Filter>源文件\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>源文件\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>源文件\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>源文件\RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>源文件\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>源文件\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>源文件\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicRHI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RendererViewport.cpp">
+      <Filter>源文件\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D12HelloTriangleParticesWithRenderer.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +172,54 @@
     </ClInclude>
     <ClInclude Include="3rdparty\imgui\imstb_truetype.h">
       <Filter>3rdparty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D12HelloTrianglePartices.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>头文件\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPass.h">
+      <Filter>头文件\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>头文件\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>头文件\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>头文件\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="GemoteryPass.h">
+      <Filter>头文件\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>头文件\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>头文件\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>头文件\RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>头文件\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>头文件\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>头文件\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicRHI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererViewport.h">
+      <Filter>头文件\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D12HelloTriangleParticesWithRenderer.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

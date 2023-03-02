@@ -121,7 +121,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>d3d12.dll</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
@@ -149,10 +149,26 @@
     <ClCompile Include="3rdparty\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="3rdparty\imgui\imgui_tables.cpp" />
     <ClCompile Include="3rdparty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3D12HelloTriangle.cpp" />
+    <ClCompile Include="D3D12HelloTrianglePartices.cpp" />
+    <ClCompile Include="D3D12HelloTriangleParticesWithRenderer.cpp" />
     <ClCompile Include="DXSample.cpp" />
+    <ClCompile Include="DynamicRHI.cpp" />
+    <ClCompile Include="GemoteryPass.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RendererViewport.cpp" />
+    <ClCompile Include="RenderPass.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Win32Application.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,11 +180,27 @@
     <ClInclude Include="3rdparty\imgui\imstb_rectpack.h" />
     <ClInclude Include="3rdparty\imgui\imstb_textedit.h" />
     <ClInclude Include="3rdparty\imgui\imstb_truetype.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="D3D12HelloTriangle.h" />
+    <ClInclude Include="D3D12HelloTrianglePartices.h" />
+    <ClInclude Include="D3D12HelloTriangleParticesWithRenderer.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DXSample.h" />
     <ClInclude Include="DXSampleHelper.h" />
+    <ClInclude Include="DynamicRHI.h" />
+    <ClInclude Include="GemoteryPass.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RendererViewport.h" />
+    <ClInclude Include="RenderPass.h" />
+    <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="Resources.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Win32Application.h" />
   </ItemGroup>
   <ItemGroup>

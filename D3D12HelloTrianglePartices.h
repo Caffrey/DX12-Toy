@@ -22,10 +22,10 @@ using namespace DirectX;
 // An example of this can be found in the class method: OnDestroy().
 using Microsoft::WRL::ComPtr;
 
-class D3D12HelloTriangle : public DXSample
+class D3D12HelloTrianglePartices : public DXSample
 {
 public:
-    D3D12HelloTriangle(UINT width, UINT height, std::wstring name);
+    D3D12HelloTrianglePartices(UINT width, UINT height, std::wstring name);
 
     virtual void OnInit();
     virtual void OnUpdate();
@@ -49,10 +49,11 @@ private:
     ComPtr<ID3D12Resource> m_renderTargets[FrameCount];
     ComPtr<ID3D12CommandAllocator> m_commandAllocator;
     ComPtr<ID3D12CommandQueue> m_commandQueue;
+	ComPtr<ID3D12GraphicsCommandList> m_commandList;
+
     ComPtr<ID3D12RootSignature> m_rootSignature;
     ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
     ComPtr<ID3D12PipelineState> m_pipelineState;
-    ComPtr<ID3D12GraphicsCommandList> m_commandList;
     UINT m_rtvDescriptorSize;
 
     // App resources.
@@ -64,6 +65,9 @@ private:
     HANDLE m_fenceEvent;
     ComPtr<ID3D12Fence> m_fence;
     UINT64 m_fenceValue;
+
+
+    
 
     void LoadPipeline();
     void LoadAssets();
@@ -78,6 +82,12 @@ protected:
     void DestroyImgui();
     float TestFLoat;
 
-
-
+protected:
+    //Create Command
+    void TestRecordCommand();
+    //Create Heap Resoruces
+    void TestCreateDescRes();
+    //Resources Binding
+    //Create Resources View
+    //Execute Command And Sync
 };

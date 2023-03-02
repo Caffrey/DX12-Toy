@@ -10,33 +10,29 @@
 //*********************************************************
 
 #include "stdafx.h"
-#include "D3D12HelloTriangle.h"
+#include "D3D12HelloTrianglePartices.h"
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx12.h"
 
-#include "DynamicRHI.h"
-
-
-D3D12HelloTriangle::D3D12HelloTriangle(UINT width, UINT height, std::wstring name) :
+D3D12HelloTrianglePartices::D3D12HelloTrianglePartices(UINT width, UINT height, std::wstring name) :
     DXSample(width, height, name),
     m_frameIndex(0),
     m_viewport(0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height)),
     m_scissorRect(0, 0, static_cast<LONG>(width), static_cast<LONG>(height)),
     m_rtvDescriptorSize(0)
 {
-
 }
 
-void D3D12HelloTriangle::OnInit()
+void D3D12HelloTrianglePartices::OnInit()
 {
     LoadPipeline();
     InitImgui();
     LoadAssets();
 }
 
-void D3D12HelloTriangle::InitImgui()
+void D3D12HelloTrianglePartices::InitImgui()
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -60,14 +56,15 @@ void D3D12HelloTriangle::InitImgui()
     );
 }
 
-void D3D12HelloTriangle::DestroyImgui()
+void D3D12HelloTrianglePartices::DestroyImgui()
 {
     ImGui_ImplDX12_Shutdown();
     ImGui_ImplWin32_Shutdown();
     
-} 
+}
 
-void D3D12HelloTriangle::DrawImgui()
+
+void D3D12HelloTrianglePartices::DrawImgui()
 {
     ImGui_ImplDX12_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -90,7 +87,7 @@ void D3D12HelloTriangle::DrawImgui()
 }
 
 // Load the rendering pipeline dependencies.
-void D3D12HelloTriangle::LoadPipeline()
+void D3D12HelloTrianglePartices::LoadPipeline()
 {
     UINT dxgiFactoryFlags = 0;
 
@@ -127,27 +124,22 @@ void D3D12HelloTriangle::LoadPipeline()
     {
         ComPtr<IDXGIAdapter1> hardwareAdapter;
         GetHardwareAdapter(factory.Get(), &hardwareAdapter);
-		DynamicRHI::Instance()->InitRHI(hardwareAdapter, factory,m_width,m_height);
 
-        //ThrowIfFailed(D3D12CreateDevice(
-        //    hardwareAdapter.Get(),
-        //    D3D_FEATURE_LEVEL_11_0,
-        //    IID_PPV_ARGS(&m_device)
-        //    ));
+        ThrowIfFailed(D3D12CreateDevice(
+            hardwareAdapter.Get(),
+            D3D_FEATURE_LEVEL_11_0,
+            IID_PPV_ARGS(&m_device)
+            ));
     }
 
-
-    m_device = DynamicRHI::Instance()->Device;
-    m_commandQueue = DynamicRHI::Instance()->CommandQueue;
     // Describe and create the command queue.
-    //D3D12_COMMAND_QUEUE_DESC queueDesc = {};
-    //queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-    //queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-    //ThrowIfFailed(m_device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_commandQueue)));
+    D3D12_COMMAND_QUEUE_DESC queueDesc = {};
+    queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+    queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+
+    ThrowIfFailed(m_device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_commandQueue)));
 
     // Describe and create the swap chain.
-
-
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     swapChainDesc.BufferCount = FrameCount;
     swapChainDesc.Width = m_width;
@@ -192,6 +184,7 @@ void D3D12HelloTriangle::LoadPipeline()
         // Create a RTV for each frame.
         for (UINT n = 0; n < FrameCount; n++)
         {
+
             ThrowIfFailed(m_swapChain->GetBuffer(n, IID_PPV_ARGS(&m_renderTargets[n])));
             m_device->CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvHandle);
             rtvHandle.Offset(1, m_rtvDescriptorSize);
@@ -202,7 +195,7 @@ void D3D12HelloTriangle::LoadPipeline()
 }
 
 // Load the sample assets.
-void D3D12HelloTriangle::LoadAssets()
+void D3D12HelloTrianglePartices::LoadAssets()
 {
     // Create an empty root signature.
     {
@@ -278,6 +271,8 @@ void D3D12HelloTriangle::LoadAssets()
         // recommended. Every time the GPU needs it, the upload heap will be marshalled 
         // over. Please read up on Default Heap usage. An upload heap is used here for 
         // code simplicity and because there are very few verts to actually transfer.
+        
+
         ThrowIfFailed(m_device->CreateCommittedResource(
             &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
             D3D12_HEAP_FLAG_NONE,
@@ -319,12 +314,12 @@ void D3D12HelloTriangle::LoadAssets()
 }
 
 // Update frame-based values.
-void D3D12HelloTriangle::OnUpdate()
+void D3D12HelloTrianglePartices::OnUpdate()
 {
 }
 
 // Render the scene.
-void D3D12HelloTriangle::OnRender()
+void D3D12HelloTrianglePartices::OnRender()
 {
     // Record all the commands we need to render the scene into the command list.
     PopulateCommandList();
@@ -341,7 +336,7 @@ void D3D12HelloTriangle::OnRender()
     WaitForPreviousFrame();
 }
 
-void D3D12HelloTriangle::OnDestroy()
+void D3D12HelloTrianglePartices::OnDestroy()
 {
     // Ensure that the GPU is no longer referencing resources that are about to be
     // cleaned up by the destructor.
@@ -354,7 +349,7 @@ void D3D12HelloTriangle::OnDestroy()
 
 }
 
-void D3D12HelloTriangle::PopulateCommandList()
+void D3D12HelloTrianglePartices::PopulateCommandList()
 {
     // Command list allocators can only be reset when the associated 
     // command lists have finished execution on the GPU; apps should use 
@@ -367,10 +362,10 @@ void D3D12HelloTriangle::PopulateCommandList()
     ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), m_pipelineState.Get()));
 
     // Set necessary state.
+    //m_commandList->SetPipelineState(m_pipelineState.Get());
     m_commandList->SetGraphicsRootSignature(m_rootSignature.Get());
     m_commandList->RSSetViewports(1, &m_viewport);
     m_commandList->RSSetScissorRects(1, &m_scissorRect);
-
     // Indicate that the back buffer will be used as a render target.
     m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
@@ -389,7 +384,7 @@ void D3D12HelloTriangle::PopulateCommandList()
 
 }
 
-void D3D12HelloTriangle::WaitForPreviousFrame()
+void D3D12HelloTrianglePartices::WaitForPreviousFrame()
 {
     // WAITING FOR THE FRAME TO COMPLETE BEFORE CONTINUING IS NOT BEST PRACTICE.
     // This is code implemented as such for simplicity. The D3D12HelloFrameBuffering
@@ -409,4 +404,88 @@ void D3D12HelloTriangle::WaitForPreviousFrame()
     }
 
     m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
+}
+
+
+
+void D3D12HelloTrianglePartices::TestRecordCommand()
+{
+
+    ComPtr<ID3D12RootSignature> RootSignature;
+    ComPtr<ID3D12GraphicsCommandList> Cmdlist;
+    ComPtr<ID3D12CommandAllocator> CmdAllactor;
+    ComPtr<ID3D12PipelineState> PSO;
+
+
+//Create RootSingurate;
+    CD3DX12_ROOT_SIGNATURE_DESC RootDesc;
+	ComPtr<ID3DBlob> RootSingnatureByteCode;
+	ComPtr<ID3DBlob> error;
+    RootDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+    ThrowIfFailed(D3D12SerializeRootSignature(&RootDesc, D3D_ROOT_SIGNATURE_VERSION_1, &RootSingnatureByteCode, &error));
+    m_device->CreateRootSignature(0, RootSingnatureByteCode->GetBufferPointer(), RootSingnatureByteCode->GetBufferSize(), IID_PPV_ARGS(&RootSignature));
+    
+//Create Allocator
+    m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,IID_PPV_ARGS(&CmdAllactor));
+    
+//Create PSO
+
+    //CREATE SHADER
+    ComPtr<ID3DBlob> VertextShader;
+    ComPtr<ID3DBlob> PixelShader;
+    UINT compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+
+    ThrowIfFailed(D3DCompileFromFile(GetAssetFullPath(L"shaders.hlsl").c_str(), nullptr, nullptr, "VSMain", "vs_5_0", compileFlags, 0, &VertextShader, nullptr));
+    ThrowIfFailed(D3DCompileFromFile(GetAssetFullPath(L"shaders.hlsl").c_str(), nullptr, nullptr, "PSMain", "ps_5_0", compileFlags, 0, &PixelShader, nullptr));
+
+    
+    D3D12_GRAPHICS_PIPELINE_STATE_DESC PsoDesc;
+    PsoDesc.pRootSignature = RootSignature.Get();
+    PsoDesc.VS = CD3DX12_SHADER_BYTECODE(VertextShader.Get());
+    PsoDesc.PS = CD3DX12_SHADER_BYTECODE(PixelShader.Get());
+    PsoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+    PsoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+    PsoDesc.SampleMask = UINT_MAX;
+    PsoDesc.DepthStencilState.DepthEnable = FALSE;
+    PsoDesc.DepthStencilState.StencilEnable = FALSE;
+    PsoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+    PsoDesc.NumRenderTargets = 1;
+    PsoDesc.RTVFormats[0] = DXGI_FORMAT_R8_UNORM;
+    PsoDesc.SampleDesc.Count = 1;
+
+    ThrowIfFailed(m_device->CreateGraphicsPipelineState(&PsoDesc,IID_PPV_ARGS(&PSO)));
+    
+
+//Create CommandList
+    m_device->CreateCommandList(0,D3D12_COMMAND_LIST_TYPE_DIRECT,CmdAllactor.Get(),PSO.Get(),IID_PPV_ARGS(&Cmdlist));
+    
+    // ComPtr<ID3D12GraphicsCommandList> CommandList;
+//    m_device->CreateCommandList()
+}
+
+void D3D12HelloTrianglePartices::TestCreateDescRes()
+{
+    //Index BufferVie
+
+
+    int Indices  []= {1,2,3,4,5,6,7,8,9};
+
+    D3D12_INDEX_BUFFER_VIEW BufferView;
+
+    ComPtr<ID3D12Resource> IndexBuffer;
+    UINT IndexBufferSize = sizeof(Indices);
+
+    m_device->CreateCommittedResource(
+        &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+        D3D12_HEAP_FLAG_NONE,
+        &CD3DX12_RESOURCE_DESC::Buffer(IndexBufferSize),
+        D3D12_RESOURCE_STATE_GENERIC_READ,
+        nullptr,
+        IID_PPV_ARGS(&IndexBuffer)
+    );
+
+    //什么时候知道Copy完数据
+    //uPloadheap
+
+
 }
